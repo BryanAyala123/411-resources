@@ -1,0 +1,31 @@
+﻿Project Requirements
+* Goal: Create a fun and interactive way for users to hear a snicker while they begins to merge their code
+* Non-Goal: Having other noises besides a snicker to play when the user merges
+   * Non-functional requirement 1: Randomness in user studies
+      * Functional requirements:
+         * Run a program to select candidates at random and giving them keys
+         * Keys will have limited access to the interface
+   * Non-functional requirement 2: Ownership Capabilities 
+      * Functional requirements:
+         * Give users ownership over their own created repository
+         * Control merge capabilities and be able to give ownership capabilities 
+Agile
+* Theme: Get GiggleGit demo into a stable enough alpha to start onboarding some adventurous clients
+* Epic: Onboarding experience
+* User Story 1: As a vanilla git power-user that has never seen GiggleGit before, I want to have a simpler and more intuitive set of commands in GiggleGit, so that I can perform tasks more efficiently without the complexity
+* User Story 2: As a team lead onboarding an experienced GiggleGit user, I want to be able to track my team's commits through a clean and organized commit history
+* User Story 3: As a beginner with no experience in version control user, I want to be able to access version control resources within GiggleGit
+   * Task: Implementing a resource page
+      * Ticket 1: Creating a web-page that stores useful resources
+
+
+Design a user friendly page that contains tutorials, FAQ’s, with a live Q&A    section where users can ask the community for help
+
+
+      * Ticket 2: Create API for resource page
+
+
+The API should allow users to access the resource page from GiggleGit home screen. Should be delivered in a structured organized format
+
+
+This is not a user story. Why not? What is it?: As a user I want to be able to authenticate on a new machine. It is not specific on the type of user nor is it specific on the actual problem this user could have.
