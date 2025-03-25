@@ -12,6 +12,12 @@ configure_logger(logger)
 
 
 class RingModel:
+    """
+    A class that simulates a fight between two boxers
+
+    Attributes:
+        List[Boxer] = contains the two boxers inside of the ring
+    """
     def __init__(self):
         self.ring: List[Boxer] = []
 
@@ -46,6 +52,11 @@ class RingModel:
         return winner.name
 
     def clear_ring(self):
+        """Function used to clear the list ring.
+
+        Returns:
+            An empty list in self.ring
+        """
         if not self.ring:
             return
         self.ring.clear()
@@ -60,6 +71,11 @@ class RingModel:
         self.ring.append(boxer)
 
     def get_boxers(self) -> List[Boxer]:
+        """Give the two boxer inside the ring
+
+        Returns:
+            A list containing the boxers inside the ring
+        """
         if not self.ring:
             pass
         else:
@@ -68,6 +84,15 @@ class RingModel:
         return self.ring
 
     def get_fighting_skill(self, boxer: Boxer) -> float:
+        """Computes the fighting skill of a unique boxer
+
+        Args:
+            boxer(Boxer): The boxer that is in the database
+
+        Returns:
+            skill (int) = skill determined by boxer weight times the lenght of the boxers name plus the boxer reach
+        divided by 10 and plus an age modifier
+        """
         # Arbitrary calculations
         age_modifier = -1 if boxer.age < 25 else (-2 if boxer.age > 35 else 0)
         skill = (boxer.weight * len(boxer.name)) + (boxer.reach / 10) + age_modifier
