@@ -10,10 +10,20 @@ configure_logger(logger)
 
 
 RANDOM_ORG_URL = os.getenv("RANDOM_ORG_URL",
-                           "https://www.random.org/decimal-fractions/?num=1&dec=2&col=1&format=plain&rnd=new")
+                            "https://www.random.org/decimal-fractions/?num=1&dec=2&col=1&format=plain&rnd=new")
 
 
 def get_random() -> float:
+    """
+    Fetches a random integer from random.org.
+
+    Returns:
+        int: a random integer
+
+    Raises:
+        ValueError: Invalid response from random.org
+        RuntimeError: timeout or failed request from random.org
+    """
     try:
         response = requests.get(RANDOM_ORG_URL, timeout=5)
 
