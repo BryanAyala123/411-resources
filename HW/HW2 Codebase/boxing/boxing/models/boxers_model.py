@@ -13,6 +13,18 @@ configure_logger(logger)
 
 @dataclass
 class Boxer:
+    """
+    A class that stores various informations about a singular boxer
+    
+    Attributes:
+        id (int): Boxer's identification number
+        name (str): Name of the Boxer
+        weight (int): Weight of the Boxer
+        height (int): Height of the Boxer
+        reach (int): Maximum reach of the Boxer
+        age (int): Age of the Boxer
+        Weight_class (str): Weight class the Boxer belongs to
+    """
     id: int
     name: str
     weight: int
@@ -29,7 +41,20 @@ class Boxer:
 
 
 def create_boxer(name: str, weight: int, height: int, reach: float, age: int) -> None:
+    """ 
+    Adds the boxer to the database. 
+    
+    Args: 
+        name (str): Name of the Boxer
+        weight (int): Weight of the Boxer
+        height (int): Height of the Boxer
+        reach (int): Maximum reach of the Boxer
+        age (int): Age of the Boxer
 
+    Raises:
+        ValueError: If an invalid weight, height, reach or age is given. If boxer with the
+        same name already exists in the Database.
+    """
     if weight < 125:
         raise ValueError(f"Invalid weight: {weight}. Must be at least 125.")
     if height <= 0:
@@ -88,6 +113,22 @@ def delete_boxer(boxer_id: int) -> None:
 
 
 def get_leaderboard(sort_by: str = "wins") -> List[dict[str, Any]]:
+    """
+    Function determines an ordering based on a specified parameter, either wins or
+    win percentage. If no parameter is specified, wins is used.
+    
+    Args:
+        sort_by (str): Parameter that determines the metric boxers are ranked and listed by
+                       Allowed Parameters are wins and win_pct. Default parameter if None
+                       inputted is wins.
+        
+    Raises:
+        ValueError: If invalid sort_by parameter is inputted.
+    
+    Returns:
+        leaderboard (list[Boxer]): List with Boxers in order as sorted by specified 
+                                   parameter.
+    """
     query = """
         SELECT id, name, weight, height, reach, age, fights, wins,
                (wins * 1.0 / fights) AS win_pct
@@ -166,6 +207,15 @@ def get_boxer_by_id(boxer_id: int) -> Boxer:
 
 
 def get_boxer_by_name(boxer_name: str) -> Boxer:
+    """
+    Searchs in the database for a Boxer with the given name
+    
+    Args:
+        boxer_name (str): Name to search for
+        
+    Raise:
+        ValueError: If not boxer with the specified name is found.
+    """
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -216,6 +266,19 @@ def get_weight_class(weight: int) -> str:
 
 
 def update_boxer_stats(boxer_id: int, result: str) -> None:
+    """
+    Updates a boxers starts with either a win or a loss, and increments the number
+    fights boxer has participated in.
+
+    Args:
+        boxer_id (int): Unique Identification Number for a Boxer
+        result (str): 
+
+    Raises:
+        ValueError: If inputted result is not 'win' or 'loss', or
+                    if no boxer with the specified id is found
+        e: If an SQLite error is encountered
+    """
     if result not in {'win', 'loss'}:
         raise ValueError(f"Invalid result: {result}. Expected 'win' or 'loss'.")
 
