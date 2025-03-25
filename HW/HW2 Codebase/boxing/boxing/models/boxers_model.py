@@ -22,6 +22,9 @@ class Boxer:
     weight_class: str = None
 
     def __post_init__(self):
+        """Initializes the Boxer using the specified weight to find thier weight class
+        
+        """
         self.weight_class = get_weight_class(self.weight)  # Automatically assign weight class
 
 
@@ -60,6 +63,15 @@ def create_boxer(name: str, weight: int, height: int, reach: float, age: int) ->
 
 
 def delete_boxer(boxer_id: int) -> None:
+    """Deletes a boxer from the specified database.
+
+    Args:
+        boxer_id (int): The unqiue ID of a specific boxer
+
+    Raises:
+        ValueError: If boxer ID was not found in database
+
+    """
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -119,6 +131,17 @@ def get_leaderboard(sort_by: str = "wins") -> List[dict[str, Any]]:
 
 
 def get_boxer_by_id(boxer_id: int) -> Boxer:
+    '''Example function that searches for a boxer given the ID
+
+    Args:
+        boxer_id(int): The unqiue identification of a singular boxer.
+
+    Raises:
+        ValueError: Boxer could not be found in the data base given the ID.
+    
+    Returns:
+        A boxer from class boxer contain information such as id, name, weight, height, reach, age.
+    '''
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -167,6 +190,17 @@ def get_boxer_by_name(boxer_name: str) -> Boxer:
 
 
 def get_weight_class(weight: int) -> str:
+    """Example function get the weight class based on the weight given
+
+    Args:
+        weight(int): A number representing the weight
+
+    Raises:
+        ValueError: If the weight(int) is below 125
+
+    Returns:
+        string: the name of the weight class the weight(int) falls under
+    """
     if weight >= 203:
         weight_class = 'HEAVYWEIGHT'
     elif weight >= 166:
