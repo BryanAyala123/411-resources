@@ -19,9 +19,21 @@ class RingModel:
         List[Boxer] = contains the two boxers inside of the ring
     """
     def __init__(self):
+        """Initializes the RingModel class with an empty ring
+        """
         self.ring: List[Boxer] = []
 
     def fight(self) -> str:
+        """
+        Function that simulates the actual fight between the two boxers in the Ring.
+        Utilizes the difference in fighting skill between boxers to get simulate a result.
+        After function is called and the winner is determined, the ring clears itself.
+        Raises:
+            ValueError: If there are less than 2 boxers in the ring.
+
+        Returns:
+            winner.name (str): Winning Boxer.
+        """
         if len(self.ring) < 2:
             raise ValueError("There must be two boxers to start a fight.")
 
@@ -62,6 +74,16 @@ class RingModel:
         self.ring.clear()
 
     def enter_ring(self, boxer: Boxer):
+        """
+        Adds a Boxer to the ring. GETTT READY TO RUMBLE!
+
+        Args:
+            boxer (Boxer): An instance of the Boxer class
+
+        Raises:
+            TypeError: If inputted boxer is not of a Boxer class.
+            ValueError: If the ring (list[Boxer]) already has 2 boxers inside.
+        """
         if not isinstance(boxer, Boxer):
             raise TypeError(f"Invalid type: Expected 'Boxer', got '{type(boxer).__name__}'")
 
