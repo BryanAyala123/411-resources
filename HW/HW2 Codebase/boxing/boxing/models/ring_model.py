@@ -69,9 +69,11 @@ class RingModel:
         Returns:
             An empty list in self.ring
         """
+        logger.info(f"Rquest to empty the list ring")
         if not self.ring:
             return
         self.ring.clear()
+        logger.info(f"Successfully emptied the ring")
 
     def enter_ring(self, boxer: Boxer):
         """
@@ -98,11 +100,12 @@ class RingModel:
         Returns:
             A list containing the boxers inside the ring
         """
+        logger.info(f"Request to get the two boxers in the ring")
         if not self.ring:
             pass
         else:
             pass
-
+        logger.info(f"Successfully got the boxers from the ring")
         return self.ring
 
     def get_fighting_skill(self, boxer: Boxer) -> float:
@@ -115,8 +118,9 @@ class RingModel:
             skill (int) = skill determined by boxer weight times the lenght of the boxers name plus the boxer reach
         divided by 10 and plus an age modifier
         """
+        logger.info(f"Request to get fighting skill of boxer")
         # Arbitrary calculations
         age_modifier = -1 if boxer.age < 25 else (-2 if boxer.age > 35 else 0)
         skill = (boxer.weight * len(boxer.name)) + (boxer.reach / 10) + age_modifier
-
+        logger.info(f"Successfully returned fighting skill of {skill}")
         return skill
