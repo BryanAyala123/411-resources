@@ -24,6 +24,7 @@ def get_random() -> float:
         ValueError: Invalid response from random.org
         RuntimeError: timeout or failed request from random.org
     """
+    logger.info(f"Attempting to retreive a random integer from random.org")
     try:
         response = requests.get(RANDOM_ORG_URL, timeout=5)
 
@@ -35,12 +36,15 @@ def get_random() -> float:
         try:
             random_number = float(random_number_str)
         except ValueError:
+            logger.info(f"Invalid response from random.org: {random_number_str}")
             raise ValueError(f"Invalid response from random.org: {random_number_str}")
-
+        logger.info("Successfully retreived and returned random number")
         return random_number
 
     except requests.exceptions.Timeout:
+        logger.info("Request to random.org timed out.")
         raise RuntimeError("Request to random.org timed out.")
 
     except requests.exceptions.RequestException as e:
+        logger.info(f"Request to random.org failed: {e}")
         raise RuntimeError(f"Request to random.org failed: {e}")

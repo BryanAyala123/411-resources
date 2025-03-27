@@ -34,7 +34,9 @@ class RingModel:
         Returns:
             winner.name (str): Winning Boxer.
         """
+        logger.info(f"Received request to start a fight in the ring")
         if len(self.ring) < 2:
+            logger.info("Error. There must be two boxers to start a fight.")
             raise ValueError("There must be two boxers to start a fight.")
 
         boxer_1, boxer_2 = self.get_boxers()
@@ -58,7 +60,7 @@ class RingModel:
 
         update_boxer_stats(winner.id, 'win')
         update_boxer_stats(loser.id, 'loss')
-
+        logger.info(f"{winner} wins the fight. Successfully updated stats. Clearing ring.")
         self.clear_ring()
 
         return winner.name
@@ -86,13 +88,17 @@ class RingModel:
             TypeError: If inputted boxer is not of a Boxer class.
             ValueError: If the ring (list[Boxer]) already has 2 boxers inside.
         """
+        logger.info(f"Received request to put boxer {boxer} in the ring")
         if not isinstance(boxer, Boxer):
+            logger.info(f"Invalid type: Expected 'Boxer', got '{type(boxer).__name__}")
             raise TypeError(f"Invalid type: Expected 'Boxer', got '{type(boxer).__name__}'")
 
         if len(self.ring) >= 2:
+            logger.info(f"Ring is full, cannot add more boxers.")
             raise ValueError("Ring is full, cannot add more boxers.")
 
         self.ring.append(boxer)
+        logger.info(f"Successfully added {boxer} to the ring")
 
     def get_boxers(self) -> List[Boxer]:
         """Give the two boxer inside the ring

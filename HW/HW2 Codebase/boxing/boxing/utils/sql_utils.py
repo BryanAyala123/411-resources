@@ -84,12 +84,16 @@ def get_db_connection():
         sqlite3.Error: If there is an issue connecting to the database.
 
     """
+    logger.info("Attempting to make a connection to the database")
     conn = None
     try:
         conn = sqlite3.connect(DB_PATH)
+        logger.info("Successfully connected to database")
         yield conn
     except sqlite3.Error as e:
+        logger.info(f"Request to database failed: {e}")
         raise e
     finally:
         if conn:
+            logger.info("Closed connection to database")
             conn.close()
