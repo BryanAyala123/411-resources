@@ -22,16 +22,36 @@ def test_get_random(mock_random_org):
     result = get_random()
 
     # Assert that the result is the mocked random number
+    assert result == RANDOM_NUMBER, f"Expected random number {RANDOM_NUMBER}, but got {result}"
+
+    #ensure that the correct URL was called
+    requests.get.assert_called_once_with("https://www.random.org/decimal-fractions/?num=1&dec=2&col=1&format=plain&rnd=new",timeout=5)
 
 def test_get_random_request_failure(mocker):
     """Test handling of a request failure when calling random.org.
 
     """
     #simulate a request failure
+    mocker.patch("request.get", side_effect=requests.exceptions.RequestException("Connection error"))
+
+    with pytest.raises(RuntimeError, match="Request to random.org failed: connection error"):
+        get_random()
 
 def test_get_random_timeout(mocker):
     """Test handling of a timeout when calling random.org.
 
     """
     #Simulate a timeout
+    mocker.patch("requests.get", side_effects=requests.exceptions.Timeout)
 
+    with pytest.raises(RuntimeError, match="Request to random.org timed out."):
+        get_random()
+
+def test_get_random_invalid_response(mocker_random_org):
+    """Test handling of an invalid response from random.org
+    """
+    #Simulate an invalid response (non-digit)
+    mock_random_org.text = "invalid_response"
+
+    with pytest.raises(ValueError, match="Invalid response from random.org: Invalid response"):
+        get_random()
