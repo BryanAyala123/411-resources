@@ -131,20 +131,20 @@ def get_leaderboard(sort_by: str = "wins") -> List[dict[str, Any]]:
     
     Args:
         sort_by (str): Parameter that determines the metric boxers are ranked and listed by
-                       Allowed Parameters are wins and win_pct. Default parameter if None
-                       inputted is wins.
+                    Allowed Parameters are wins and win_pct. Default parameter if None
+                    inputted is wins.
         
     Raises:
         ValueError: If invalid sort_by parameter is inputted.
     
     Returns:
         leaderboard (list[Boxer]): List with Boxers in order as sorted by specified 
-                                   parameter.
+                                parameter.
     """
     logger.info(f"Received request to get leaderboard of boxers based on {sort_by}")
     query = """
         SELECT id, name, weight, height, reach, age, fights, wins,
-               (wins * 1.0 / fights) AS win_pct
+            (wins * 1.0 / fights) AS win_pct
         FROM boxers
         WHERE fights > 0
     """
@@ -284,10 +284,10 @@ def get_weight_class(weight: int) -> str:
     elif weight >= 125:
         weight_class = 'FEATHERWEIGHT'
     else:
-        logger.error(f"The wieght: {weight} has to be at least 125")
+        logger.error(f"The weight: {weight} has to be at least 125")
         raise ValueError(f"Invalid weight: {weight}. Weight must be at least 125.")
 
-    logger.info(f"Successfully got the wieghtclass = {weight_class}")
+    logger.info(f"Successfully got the weightclass = {weight_class}")
     return weight_class
 
 
