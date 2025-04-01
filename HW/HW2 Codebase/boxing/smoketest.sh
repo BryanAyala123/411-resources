@@ -151,5 +151,69 @@ get_weight_class(){
     fi
 }
 
+fight(){
+    echo "Simulating a fight..."
+    response=$(curl -s -X GET "$BASE_URL/fight")
+    if echo "$response" | grep -q '"status": "success"'; then
+        echo "Boxer fight retrieved successfully."
+        if [ "$ECHO_JSON" = true ]; then
+            echo "$response" | jq .
+        fi
+    else
+        echo "Failed to simulate fight"
+        exit 1
+    fi
+}
+
+clear_playlist() {
+    echo "Clearing ring..."
+    response=$(curl -s -X POST "$BASE_URL/clear-ring")
+
+    if echo "$response" | grep -q '"status": "success"'; then
+        echo "Ring cleared successfully."
+    else
+        echo "Failed to clear ring."
+        exit 1
+    fi
+}
+
+enter_ring() {
+    Boxer=$1
+
+    echo "Adding song to playlist: $Boxer..."
+    response=$(curl -s -X POST "$BASE_URL/add-boxer-to-ring" \
+        -H "Content-Type: application/json" \
+        -d "{\"boxer\":\"$Boxer\"")
+
+    if echo "$response" | grep -q '"status": "success"'; then
+        echo "Boxer added to ring successfully."
+        if [ "$ECHO_JSON" = true ]; then
+            echo "Song JSON:"
+            echo "$response" | jq .
+        fi
+    else
+        echo "Failed to add Boxer to ring."
+        exit 1
+    fi
+}
+
+get_boxers(){
+    echo "Retrieving all songs from playlist..."
+    response=$(curl -s -X GET "$BASE_URL/get-all-boxers-from-ring")
+
+    if echo "$response" | grep -q '"status": "success"'; then
+        echo "All boxers retrieved successfully."
+        if [ "$ECHO_JSON" = true ]; then
+            echo "Songs JSON:"
+            echo "$response" | jq .
+        fi
+    else
+        echo "Failed to retrieve all boxers from ring."
+        exit 1
+    fi
+}
+
+
+
 
 
