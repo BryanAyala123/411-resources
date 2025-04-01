@@ -151,6 +151,13 @@ get_weight_class(){
     fi
 }
 
+
+############################################################
+#
+# Play ring
+#
+############################################################
+
 fight(){
     echo "Simulating a fight..."
     response=$(curl -s -X GET "$BASE_URL/fight")
@@ -165,7 +172,7 @@ fight(){
     fi
 }
 
-clear_playlist() {
+clear_ring() {
     echo "Clearing ring..."
     response=$(curl -s -X POST "$BASE_URL/clear-ring")
 
@@ -213,7 +220,31 @@ get_boxers(){
     fi
 }
 
+# Initialize the database
+sqlite3 db/playlist.db < sql/init_db.sql
 
+#Healthy checks
+check_health
+check_db
 
+# Create Boxers 
+create_boxer "James" 133 56 23 18
+create_boxer "Ali" 230 70 40 24
+create_boxer "Canelo" 218 69 9 30
+create_boxer "John" 190 34 20 25
+create_boxer "Rock" 250 79 50 40
 
+delete_boxer_by_id 1
 
+get_leaderboard
+
+get_boxer_by_id 2
+get_boxer_by_name "Canelo"
+
+get_weight_class 135
+
+fight
+clear_ring
+
+enter_ring "Ali"
+get_boxers
