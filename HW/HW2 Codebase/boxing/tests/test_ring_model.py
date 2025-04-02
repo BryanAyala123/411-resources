@@ -79,11 +79,12 @@ def test_fight_skill(ring_model, sample_boxer1):
 
     assert ring_model.get_fighting_skill(sample_boxer1) ==  (138 * len("Henry")) + (20 / 10) + (-2)
 
-def test_fight_ring(ring_model, sample_boxer1, sample_boxer2):
+def test_fight_ring(ring_model, sample_boxer1, sample_boxer2, mock_update_boxer_stats):
     ring_model.enter_ring(sample_boxer1)
     ring_model.enter_ring(sample_boxer2)
     ring_model.fight()
 
+    mock_update_boxer_stats.assert_called()
     assert len(ring_model.ring) == 0
 
 def test_fight_ring_one_boxer(ring_model, sample_boxer1):
