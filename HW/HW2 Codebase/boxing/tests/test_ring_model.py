@@ -57,7 +57,7 @@ def test_ring_max_capacity(ring_model, sample_boxer1, sample_boxer2, sample_boxe
     ring_model.enter_ring(sample_boxer1)
     ring_model.enter_ring(sample_boxer2)
 
-    with pytest.raises(ValueError, match="Ring already has 2 boxers in the ring"):
+    with pytest.raises(ValueError, match="Ring is full, cannot add more boxers."):
         ring_model.enter_ring(sample_boxer3)
     
 def test_clear_ring(ring_model, sample_boxer1):
@@ -83,11 +83,11 @@ def test_fight_ring(ring_model, sample_boxer1, sample_boxer2):
     ring_model.enter_ring(sample_boxer1)
     ring_model.enter_ring(sample_boxer2)
     ring_model.fight()
-    
+
     assert len(ring_model.ring) == 0
 
 def test_fight_ring_one_boxer(ring_model, sample_boxer1):
     ring_model.enter_ring(sample_boxer1)
 
-    with pytest.raises(ValueError, match="Need to have at least 2 boxers in the ring"):
+    with pytest.raises(ValueError, match="There must be two boxers to start a fight."):
         ring_model.fight()
