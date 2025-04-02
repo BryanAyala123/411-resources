@@ -1,0 +1,8 @@
+------------------------------------------------------------ Captured stderr call -------------------------------------------------------------
+2025-04-01 23:41:10,617 - boxing.models.boxers_model - INFO - Received request to get leaderboard of boxers based on win_pct
+-------------------------------------------------------------- Captured log call --------------------------------------------------------------
+INFO     boxing.models.boxers_model:boxers_model.py:144 Received request to get leaderboard of boxers based on win_pct
+=========================================================== short test summary info ===========================================================
+FAILED tests/test_boxer_model.py::test_get_leaderboard_by_wins - KeyError: 0
+FAILED tests/test_boxer_model.py::test_get_leaderboard_by_winpct - KeyError: 0
+======================================================== 2 failed, 27 passed in 0.84s =========================================================
