@@ -12,11 +12,31 @@ configure_logger(logger)
 
 
 class RingModel:
+    """
+    A class that simulates a fight between two boxers
+
+    Attributes:
+        List[Boxer] = contains the two boxers inside of the ring
+    """
     def __init__(self):
+        """Initializes the RingModel class with an empty ring
+        """
         self.ring: List[Boxer] = []
 
     def fight(self) -> str:
+        """
+        Function that simulates the actual fight between the two boxers in the Ring.
+        Utilizes the difference in fighting skill between boxers to get simulate a result.
+        After function is called and the winner is determined, the ring clears itself.
+        Raises:
+            ValueError: If there are less than 2 boxers in the ring.
+
+        Returns:
+            winner.name (str): Winning Boxer.
+        """
+        logger.info(f"Received request to start a fight in the ring")
         if len(self.ring) < 2:
+            logger.info("Error. There must be two boxers to start a fight.")
             raise ValueError("There must be two boxers to start a fight.")
 
         boxer_1, boxer_2 = self.get_boxers()
@@ -40,36 +60,73 @@ class RingModel:
 
         update_boxer_stats(winner.id, 'win')
         update_boxer_stats(loser.id, 'loss')
-
+        logger.info(f"{winner} wins the fight. Successfully updated stats. Clearing ring.")
         self.clear_ring()
 
         return winner.name
 
     def clear_ring(self):
+        """Function used to clear the list ring.
+
+        Returns:
+            An empty list in self.ring
+        """
+        logger.info(f"Rquest to empty the list ring")
         if not self.ring:
             return
         self.ring.clear()
+        logger.info(f"Successfully emptied the ring")
 
     def enter_ring(self, boxer: Boxer):
+        """
+        Adds a Boxer to the ring. GETTT READY TO RUMBLE!
+
+        Args:
+            boxer (Boxer): An instance of the Boxer class
+
+        Raises:
+            TypeError: If inputted boxer is not of a Boxer class.
+            ValueError: If the ring (list[Boxer]) already has 2 boxers inside.
+        """
+        logger.info(f"Received request to put boxer {boxer} in the ring")
         if not isinstance(boxer, Boxer):
+            logger.info(f"Invalid type: Expected 'Boxer', got '{type(boxer).__name__}")
             raise TypeError(f"Invalid type: Expected 'Boxer', got '{type(boxer).__name__}'")
 
         if len(self.ring) >= 2:
+            logger.info(f"Ring is full, cannot add more boxers.")
             raise ValueError("Ring is full, cannot add more boxers.")
 
         self.ring.append(boxer)
+        logger.info(f"Successfully added {boxer} to the ring")
 
     def get_boxers(self) -> List[Boxer]:
+        """Give the two boxer inside the ring
+
+        Returns:
+            A list containing the boxers inside the ring
+        """
+        logger.info(f"Request to get the two boxers in the ring")
         if not self.ring:
             pass
         else:
             pass
-
+        logger.info(f"Successfully got the boxers from the ring")
         return self.ring
 
     def get_fighting_skill(self, boxer: Boxer) -> float:
+        """Computes the fighting skill of a unique boxer
+
+        Args:
+            boxer(Boxer): The boxer that is in the database
+
+        Returns:
+            skill (int) = skill determined by boxer weight times the lenght of the boxers name plus the boxer reach
+        divided by 10 and plus an age modifier
+        """
+        logger.info(f"Request to get fighting skill of boxer")
         # Arbitrary calculations
         age_modifier = -1 if boxer.age < 25 else (-2 if boxer.age > 35 else 0)
         skill = (boxer.weight * len(boxer.name)) + (boxer.reach / 10) + age_modifier
-
+        logger.info(f"Successfully returned fighting skill of {skill}")
         return skill
