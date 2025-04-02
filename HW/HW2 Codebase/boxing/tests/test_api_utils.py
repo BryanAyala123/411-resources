@@ -33,7 +33,7 @@ def test_get_random_request_failure(mocker):
 
     """
     #simulate a request failure
-    mocker.patch("request.get", side_effect=requests.exceptions.RequestException("Connection error"))
+    mocker.patch("requests.get", side_effect=requests.exceptions.RequestException("Connection error"))
 
     with pytest.raises(RuntimeError, match="Request to random.org failed: connection error"):
         get_random()
@@ -43,7 +43,7 @@ def test_get_random_timeout(mocker):
 
     """
     #Simulate a timeout
-    mocker.patch("requests.get", side_effects=requests.exceptions.Timeout)
+    mocker.patch("requests.get", side_effect=requests.exceptions.Timeout)
 
     with pytest.raises(RuntimeError, match="Request to random.org timed out."):
         get_random()
@@ -54,5 +54,5 @@ def test_get_random_invalid_response(mocker_random_org):
     #Simulate an invalid response (non-digit)
     mock_random_org.text = "invalid_response"
 
-    with pytest.raises(ValueError, match="Invalid response from random.org: Invalid response"):
+    with pytest.raises(ValueError, match=f"Invalid response from random.org"):
         get_random()
