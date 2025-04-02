@@ -37,7 +37,7 @@ def get_random() -> float:
             random_number = float(random_number_str)
         except ValueError:
             logger.info(f"Invalid response from random.org: {random_number_str}")
-            raise ValueError(f"Invalid response from random.org: {random_number_str}")
+            raise ValueError(f"Invalid response from random.org")
         logger.info("Successfully retreived and returned random number")
         return random_number
 
