@@ -61,7 +61,7 @@ create_boxer(){
     age=$5
 
     echo "Adding boxer ($name - $weight, $height) to the ring..."
-    curl -s -X POST "$BASE_URL/create-boxer" -H "Content-Type: application/json" \
+    curl -s -X POST "$BASE_URL/add-boxer" -H "Content-Type: application/json" \
         -d "{\"name\":\"$name\", \"weight\":\"$weight\", \"height\":$height, \"reach\":\"$reach\", \"age\":$age}" | grep -q '"status": "success"' 
     
     if [ $? -eq 0 ]; then
@@ -87,7 +87,7 @@ delete_boxer_by_id(){
 
 get_leaderboard(){
     echo "Getting the leaderboards by boxer..."
-    response=$(curl -s -X GET "$BASE_URL/boxer-leaderboard?sort=win_count")
+    response=$(curl -s -X GET "$BASE_URL/leaderboard")
     if echo "$respone" | grep -q '"status": "success"'; then
         echo "Boxer leaderboard retrieved successfuly."
         if ["$ECHO_JSON" = true]; then
@@ -104,7 +104,7 @@ get_boxer_by_id(){
     boxer_id=$1
 
     echo "Getting song by ID ($boxer_id)..."
-    response=$(curl -s -X GET "$BASE_URL/get-boxer-from-catalog-by-id/$boxer_id")
+    response=$(curl -s -X GET "$BASE_URL/get-boxer-by-id/$boxer_id")
     if echo "$response" | grep -q '"status": "success"'; then
         echo "Boxer retrieved successfully by ID ($boxer_id)."
         if [ "$ECHO_JSON" = true ]; then
@@ -121,7 +121,7 @@ get_boxer_by_name(){
     boxer_name=$1
 
     echo "Getting song by ID ($boxer_name)..."
-    response=$(curl -s -X GET "$BASE_URL/get-boxer-from-catalog-by-name/$boxer_name")
+    response=$(curl -s -X GET "$BASE_URL/get-boxer-name/$boxer_name")
     if echo "$response" | grep -q '"status": "success"'; then
         echo "Boxer retrieved successfully by Name ($boxer_name)."
         if [ "$ECHO_JSON" = true ]; then
@@ -133,25 +133,6 @@ get_boxer_by_name(){
         exit 1
     fi
 }
-
-get_weight_class(){
-    boxer_weight=$1
-
-    echo "Getting weight class of boxer ($boxerweight)..."
-    response=$(curl -s -X GET "$BASE_URL/get-boxer-from-catalog-by-name/$boxer_weight")
-    if echo "$response" | grep -q '"status": "success"'; then
-        echo "Boxer retrieved successfully by weight_class ($boxer_weight)."
-        if [ "$ECHO_JSON" = true ]; then
-            echo "Boxer JSON (Weight $boxer_weight):"
-            echo "$response" | jq .
-        fi
-    else
-        echo "Failed to get Boxer by weight ($boxer_weight)."
-        exit 1
-    fi
-}
-
-
 ############################################################
 #
 # Play ring
@@ -174,7 +155,7 @@ fight(){
 
 clear_ring() {
     echo "Clearing ring..."
-    response=$(curl -s -X POST "$BASE_URL/clear-ring")
+    response=$(curl -s -X POST "$BASE_URL/clear-boxers")
 
     if echo "$response" | grep -q '"status": "success"'; then
         echo "Ring cleared successfully."
@@ -188,7 +169,7 @@ enter_ring() {
     Boxer=$1
 
     echo "Adding song to playlist: $Boxer..."
-    response=$(curl -s -X POST "$BASE_URL/add-boxer-to-ring" \
+    response=$(curl -s -X POST "$BASE_URL/enter-ring" \
         -H "Content-Type: application/json" \
         -d "{\"boxer\":\"$Boxer\"")
 
@@ -206,7 +187,7 @@ enter_ring() {
 
 get_boxers(){
     echo "Retrieving all songs from playlist..."
-    response=$(curl -s -X GET "$BASE_URL/get-all-boxers-from-ring")
+    response=$(curl -s -X GET "$BASE_URL/get-boxers")
 
     if echo "$response" | grep -q '"status": "success"'; then
         echo "All boxers retrieved successfully."
