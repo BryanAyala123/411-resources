@@ -56,7 +56,7 @@ def test_create_boxer(mock_cursor):
     create_boxer(name= "Sean Zhang", weight= 175, height= 71, reach= 87.2, age= 18)
     
     expected_query = normalize_whitespace("""
-        INSERT INTO songs (name, weight, height, reach, age)
+        INSERT INTO boxers (name, weight, height, reach, age)
         VALUES (?, ?, ?, ?, ?)
     """)
     actual_query = normalize_whitespace(mock_cursor.execute.call_args[0][0])
@@ -74,34 +74,34 @@ def test_create_duplicate_boxer(mock_cursor):
     """
     mock_cursor.execute.side_effect = sqlite3.IntegrityError("UNIQUE constraint failed: boxers.name")
 
-    with pytest.raises(ValueError, match="Boxer with name 'Sean Zhang' already exists."):
+    with pytest.raises(ValueError, match=r"Boxer with name 'Sean Zhang' already exists"):
         create_boxer(name= "Sean Zhang", weight= 175, height= 71, reach= 87.2, age= 18)
 
 def test_create_boxer_invalid_weight():
     """ Test error when creating a boxer with a weight < 125
     """
-    with pytest.raises(ValueError, match=r"Invalid Weight: 124 \(Weight must be >=125)"):
+    with pytest.raises(ValueError, match=r"Invalid weight: 124\. Weight must be at least 125\."):
         create_boxer(name= "Sean Zhang", weight= 124, height= 71, reach= 87.2, age= 18)
         
 def test_create_boxer_invalid_height():
     """ Test error when creating a boxer with a height <= 0
     """
-    with pytest.raises(ValueError, match=r"Invalid Height: 0 \(Height must be > 0)"):
+    with pytest.raises(ValueError, match=r"Invalid height: 0\. Height must be greater than 0\."):
         create_boxer(name= "Sean Zhang", weight= 175, height= 0, reach= 87.2, age= 18)
     
 def test_create_boxer_invalid_reach():
     """ Test error when creating a boxer with a reach <= 0
     """
-    with pytest.raises(ValueError, match=r"Invalid Reach: -2 \(Reach must be > 0)"):
+    with pytest.raises(ValueError, match=r"Invalid reach: -2.0\. Reach must be greater than 0\."):
         create_boxer(name= "Sean Zhang", weight= 175, height= 71, reach= -2.0, age= 18)
     
 def test_create_boxer_invalid_age():
     """ Test error when creating a boxer with an age < 18 or age > 40
     """
-    with pytest.raises(ValueError, match=r"Invalid Age: 10 \(Age must be >= 18 and <= 40)"):
+    with pytest.raises(ValueError, match=r"Invalid age: 10\. Must be between 18 and 40\."):
         create_boxer(name= "Sean Zhang", weight= 175, height= 71, reach= 87.2, age= 10)
         
-    with pytest.raises(ValueError, match=r"Invalid Age: 100 \(Age must be >= 18 and <= 40)"):
+    with pytest.raises(ValueError, match=r"Invalid age: 100\. Must be between 18 and 40\."):
         create_boxer(name= "Sean Zhang", weight= 175, height= 71, reach= 87.2, age= 100)
 
 def test_delete_boxer(mock_cursor):
@@ -215,7 +215,7 @@ def test_get_leaderboard_bad_sortby_parameter():
     """ Testing the get_leaderboard function using an invalid sort_by parameter 
     (should raise error)
     """
-    with pytest.raises(ValueError, match =f"Invalid sort_by parameter: 'age'"):
+    with pytest.raises(ValueError, match=r"Invalid sort_by parameter: age"):
         get_leaderboard(sort_by = "age")
 
 ######################################################
@@ -253,7 +253,7 @@ def test_get_boxer_by_bad_id(mock_cursor):
     """
     mock_cursor.fetchone.return_value = None
 
-    with pytest.raises(ValueError, match="Boxer with ID 999 not found"):
+    with pytest.raises(ValueError, match=r"Boxer with ID 999 not found"):
         get_boxer_by_id(999)
 
 def test_get_boxer_by_name(mock_cursor):
@@ -285,8 +285,8 @@ def test_get_boxer_by_bad_name(mock_cursor):
     """
     mock_cursor.fetchone.return_value = None
 
-    with pytest.raises(ValueError, match="Boxer with name 'Sean Zhang' not found"):
-        get_boxer_by_id("Sean Zhang")
+    with pytest.raises(ValueError, match=r"Boxer 'Sean Zhang' not found\."):
+        get_boxer_by_name("Sean Zhang")
 
 def test_get_weight_class():
     """ Testing the get_weight_class function
@@ -305,7 +305,7 @@ def test_get_weight_class():
 def test_get_weight_class_bad():
     """ Testing the get_weight_class function with a weight < 125
     """
-    with pytest.raises(ValueError, match=r"Invalid Weight: 124 \(Weight must be >=125)"):
+    with pytest.raises(ValueError, match=r"Invalid weight: 124\. Weight must be at least 125\."):
         get_weight_class(124)
 
 ######################################################
@@ -340,7 +340,7 @@ def test_update_boxer_stats_bad(mock_cursor):
     mock_cursor.fetchone.return_value = True
     
     boxer_id = 1
-    with pytest.raises(ValueError, match=r"Invalid result: 'W' \( Expected 'win' or 'loss'.)"):
+    with pytest.raises(ValueError, match=r"Invalid result: W\. Expected 'win' or 'loss'\."):
         update_boxer_stats(boxer_id, 'W')
     
     

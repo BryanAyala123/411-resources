@@ -58,13 +58,13 @@ def create_boxer(name: str, weight: int, height: int, reach: float, age: int) ->
     logger.info(f"Received request to create boxer with name: {name}, weight: {weight}, height: {height}, reach: {reach}, age: {age}")
     if weight < 125:
         logger.error(f"{weight} must be at least 125")
-        raise ValueError(f"Invalid weight: {weight}. Must be at least 125.")
+        raise ValueError(f"Invalid weight: {weight}. Weight must be at least 125.")
     if height <= 0:
         logger.error(f"{height} cannot be less than 0")
-        raise ValueError(f"Invalid height: {height}. Must be greater than 0.")
+        raise ValueError(f"Invalid height: {height}. Height must be greater than 0.")
     if reach <= 0:
         logger.error(f"{reach} must be greater than 0")
-        raise ValueError(f"Invalid reach: {reach}. Must be greater than 0.")
+        raise ValueError(f"Invalid reach: {reach}. Reach must be greater than 0.")
     if not (18 <= age <= 40):
         logger.error(f"age must be between 18 and 40, age: {age}")
         raise ValueError(f"Invalid age: {age}. Must be between 18 and 40.")
@@ -274,7 +274,7 @@ def get_weight_class(weight: int) -> str:
     Returns:
         string: the name of the weight class the weight(int) falls under
     """
-    logger.info("Received request to get wieght class")
+    logger.info("Received request to get weight class")
     if weight >= 203:
         weight_class = 'HEAVYWEIGHT'
     elif weight >= 166:
