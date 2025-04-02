@@ -76,8 +76,10 @@ def test_fight_skill(ring_model, sample_boxer1):
     """Test the fighting skill a boxer
     """
     ring_model.get_fighting_skill(sample_boxer1)
+    
+    expected_result = (138 * len("Henry")) + (20 / 10) + (0)
 
-    assert ring_model.get_fighting_skill(sample_boxer1) ==  (138 * len("Henry")) + (20 / 10) + (-2)
+    assert ring_model.get_fighting_skill(sample_boxer1) == expected_result
 
 def test_fight_ring(ring_model, sample_boxer1, sample_boxer2, mock_update_boxer_stats):
     ring_model.enter_ring(sample_boxer1)

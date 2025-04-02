@@ -176,7 +176,7 @@ def test_get_leaderboard_by_wins(mock_cursor):
             FROM boxers
             WHERE fights > 0
         """)
-    actual_query = normalize_whitespace(mock_cursor.execute.call_args[0][0])
+    actual_query = normalize_whitespace(mock_cursor.execute.call_args[0])
     
     assert actual_query == expected_query, "The SQL query did not match the expected structure."
     
